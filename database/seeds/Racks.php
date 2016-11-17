@@ -20,7 +20,7 @@ class Racks extends Seeder
             $Rack = Rack::create([
                 'title' => 'Стеллаж №'.$i
             ]);
-            $countShelves = rand(6, 12);
+            $countShelves = rand(4, 8);
             $Shelves = [];
             $shelfSize = [210, 300];
             for($j=1; $j<=$countShelves; $j++){
