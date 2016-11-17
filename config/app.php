@@ -2,6 +2,11 @@
 
 return [
 
+    'dimensions' => [
+        'point' => 'mm',
+        'multiplier' => 0.5
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

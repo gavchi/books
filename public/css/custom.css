@@ -1,0 +1,33 @@
+/*library*/
+.library{
+
+}
+.library .racks{
+    position: relative;
+}
+.rack-block{
+    margin:0 40px 0 0;
+    position: relative;
+    height: 1000px;
+}
+.rack-block h3{
+    position: absolute;
+    top: 0;
+}
+.rack{
+    border:10px solid black;
+    position: absolute;
+    bottom: 0;
+}
+.shelf{
+    border-bottom: 5px solid saddlebrown;
+    width: 100%;
+    position: relative;
+}
+
+/*heap*/
+.heaps_book{
+    border: 1px solid black;
+    cursor: pointer;
+    background: #fff;
+}
