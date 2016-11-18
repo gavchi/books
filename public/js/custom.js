@@ -4,6 +4,20 @@ $(function () {
             console.log('out heap');
         },
         receive: function( event, ui ) {
+            var book = ui.item;
+            $.ajax({
+                type: "POST",
+                url: $(this).data('save'),
+                data: {
+                    bookId : book.data('id')
+                },
+                error: function(response){
+                    showError(response.responseJSON[0].error);
+                },
+                success: function(result, status){
+                    ;
+                }
+            });
             ui.item.css({
                 'position': 'inherit',
                 'left': '0px',
@@ -13,16 +27,32 @@ $(function () {
         },
         beforeStop: function(event, ui) {
             console.log('heapSortable start to stop');
-            var checkResult = canReceive($(ui.placeholder).parent(), ui.item);
-            if(!checkResult.can){
-                console.log(checkResult.reason);
+            var shelf = $(ui.placeholder).parent();
+            var book = ui.item;
+            var checkResult = canReceive(shelf, book);
+            if(checkResult.can){
+                $.ajax({
+                    type: "POST",
+                    url: shelf.data('save'),
+                    data: {
+                        bookId : book.data('id')
+                    },
+                    error: function(response){
+                        showError(response.responseJSON[0].error);
+                    },
+                    success: function(result, status){
+                        ;
+                    }
+                });
+            }else{
                 $(this).sortable("cancel");
+                showError(checkResult.reason);
             }
         },
         connectWith: ['.transfer']
     });
     function calculateOffset(items, real){
-        real = real || false;
+        var real = real || false;
         var width = 0;
         items.each(function(){
             if(real){
@@ -109,5 +139,34 @@ $(function () {
             can: true
         };
     }
+
+    function showError(text){
+        var modal = $('.modal');
+        var title = modal.find('.modal-title');
+        var message = modal.find('.modal-body .message');
+        var errors = {
+            'vertical': 'Книга должна находиться в вертикальной ориентации. Кликните по ней, чтобы повернуть.',
+            'width': 'На полке недостаточно свободного места',
+            'depth': 'Книга не может быть длиннее, чем глубина полки. Очень жаль, что в 2D это не отобразить.',
+            'height': 'Книга слишком высокая. Поместите ее на другую полку',
+            'ajax': 'Ошибка выполнения ajax-запроса',
+        };
+        message.text(errors[text] !== undefined ? errors[text] : text);
+        title.text('Ошибка');
+        modal.on('hidden.bs.modal', function (e) {
+            message.text('');
+            title.text('');
+        }).modal();
+    }
+    function getRandomInt(min, max) {
+        return min === max ? min : (Math.floor(Math.random() * (max - min)) + min);
+    }
+    function putDownBook(){
+        var shelves = $('.shelf:has(.book)');
+        var shelve = shelves.eq(getRandomInt(0, shelves.length));
+        var book = shelve.children().eq(getRandomInt(0, shelve.children().length));
+        console.log(book);
+    }
+    putDownBook();
     //$('[data-possible="draggable"]').draggable();
 })

@@ -32,7 +32,15 @@
                 <div class="rack" style="width: {{$Rack->shelves->first()->width * $dimMtpl}}px;">
                     @foreach($Rack->shelves as $Shelf)
                         <div class="shelf transfer" style="height: {{$Shelf->height * $dimMtpl}}px;"
-                             data-height="{{$Shelf->height}}" data-width="{{$Shelf->width}}" data-depth="{{$Shelf->depth}}"></div>
+                             data-height="{{$Shelf->height}}" data-width="{{$Shelf->width}}" data-depth="{{$Shelf->depth}}" data-save="{{action('IndexController@postBookToShelf', $Shelf->id)}}">
+                            @php $left=0; @endphp
+                            @foreach($Shelf->books as $Book)
+                                <div class="btn book vertical spin{{rand(1,5)}}"
+                                     style="width: {{$Book->depth * $dimMtpl}}px; height: {{$Book->height * $dimMtpl}}px; position: absolute; bottom: 0; left: {{$left}}px" title="{{$Book->title}}"
+                                     data-height="{{$Book->height}}" data-width="{{$Book->width}}" data-depth="{{$Book->depth}}" data-id="{{$Book->id}}"></div>
+                                @php $left += $Book->depth * $dimMtpl; @endphp
+                            @endforeach
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -41,12 +49,18 @@
     </div>
     <div class="col-md-5 heap">
         <h2>Куча</h2>
-        <div class="books transfer">
+        <h5>сначала короткие. затем длинные</h5>
+        <div class="books transfer" data-save="{{action('IndexController@postBookToHeap')}}">
             @foreach($BooksFromHeap as $Book)
                 <div class="btn book heaps_book spin{{rand(1,5)}}"
                      style="width: {{$Book->height * $dimMtpl}}px; height: {{$Book->depth * $dimMtpl}}px" title="{{$Book->title}}"
-                     data-height="{{$Book->height}}" data-width="{{$Book->width}}" data-depth="{{$Book->depth}}"></div>
+                     data-height="{{$Book->height}}" data-width="{{$Book->width}}" data-depth="{{$Book->depth}}" data-id="{{$Book->id}}"></div>
             @endforeach
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                <button>Уронить книгу</button>
+            </div>
         </div>
     </div>
 </div>

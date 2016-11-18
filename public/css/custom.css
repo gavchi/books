@@ -28,11 +28,11 @@
 
 /*heap*/
 .heaps_book{
+}
+.book{
     border: 1px solid black;
     cursor: pointer;
     background: #fff;
-}
-.book{
     padding: 0;
 }
 .spin1{
