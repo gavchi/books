@@ -30,21 +30,7 @@ $(function () {
             var shelf = $(ui.placeholder).parent();
             var book = ui.item;
             var checkResult = canReceive(shelf, book);
-            if(checkResult.can){
-                $.ajax({
-                    type: "POST",
-                    url: shelf.data('save'),
-                    data: {
-                        bookId : book.data('id')
-                    },
-                    error: function(response){
-                        showError(response.responseJSON[0].error);
-                    },
-                    success: function(result, status){
-                        ;
-                    }
-                });
-            }else{
+            if(!checkResult.can){
                 $(this).sortable("cancel");
                 showError(checkResult.reason);
             }
@@ -90,6 +76,21 @@ $(function () {
         },
         update: function( event, ui ) {
             console.log('update shelf');
+            var shelf = ui.item.parent();
+            var book = ui.item;
+            $.ajax({
+                type: "POST",
+                url: shelf.data('save'),
+                data: {
+                    bookId : book.data('id')
+                },
+                error: function(response){
+                    showError(response.responseJSON[0].error);
+                },
+                success: function(result, status){
+                    ;
+                }
+            });
             ui.item.parent().children().each(function(){
                 $(this).css({
                     'left': calculateOffset($(this).prevAll())+'px'
