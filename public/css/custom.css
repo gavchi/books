@@ -8,7 +8,7 @@
 .rack-block{
     margin:0 40px 0 0;
     position: relative;
-    height: 1000px;
+    height: 800px;
 }
 .rack-block h3{
     position: absolute;
@@ -20,9 +20,10 @@
     bottom: 0;
 }
 .shelf{
-    border-bottom: 5px solid saddlebrown;
+    border-bottom: 2px solid saddlebrown;
     width: 100%;
     position: relative;
+    background: url("/image/woods.jpg") 0 0 repeat;
 }
 
 /*heap*/
@@ -30,4 +31,25 @@
     border: 1px solid black;
     cursor: pointer;
     background: #fff;
+}
+.book{
+    padding: 0;
+}
+.spin1{
+    background: url("/image/spins/1.jpg") 0 0 repeat-x;
+}
+.spin2{
+    background: url("/image/spins/2.jpg") 0 0 repeat-x;
+}
+.spin3{
+    background: url("/image/spins/3.jpg") 0 0 repeat-x;
+}
+.spin4{
+    background: url("/image/spins/4.jpg") 0 0 repeat-x;
+}
+.spin5{
+    background: url("/image/spins/5.jpg") 0 0 repeat-x;
+}
+.vertical{
+    background-repeat: repeat-y;
 }

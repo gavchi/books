@@ -12,7 +12,7 @@ class IndexController extends Controller
 {
     public function getIndex(){
         $Racks = Rack::with('shelves.books')->get();
-        $BooksFromHeap = Book::whereDoesntHave('shelf')->orderBy('height')->get();
+        $BooksFromHeap = Book::whereDoesntHave('shelf')->orderBy('width')->get();
         $dimMtpl = config('app.dimensions.multiplier');
         return view('index', compact('Racks', 'BooksFromHeap', 'dimMtpl'));
     }

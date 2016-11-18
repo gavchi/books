@@ -4,7 +4,7 @@ return [
 
     'dimensions' => [
         'point' => 'mm',
-        'multiplier' => 0.5
+        'multiplier' => 0.4
     ],
 
     /*
