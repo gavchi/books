@@ -58,8 +58,11 @@
             @endforeach
         </div>
         <div class="row">
-            <div class="col-md-2 col-md-offset-5">
-                <button>Уронить книгу</button>
+            <div class="col-md-7 col-md-offset-3">
+                <div class="btn-group" role="group" aria-label="...">
+                    <button role="putDownBook" class="btn btn-warning">Уронить книгу</button>
+                    <button class="btn btn-danger" data-name="droppingSwitcher" data-text-on="Прекратить ронять автоматически"  data-text-off="Начать ронять автоматически">Начать ронять автоматически</button>
+                </div>
             </div>
         </div>
     </div>

@@ -5,24 +5,8 @@ $(function () {
         },
         receive: function( event, ui ) {
             var book = ui.item;
-            $.ajax({
-                type: "POST",
-                url: $(this).data('save'),
-                data: {
-                    bookId : book.data('id')
-                },
-                error: function(response){
-                    showError(response.responseJSON[0].error);
-                },
-                success: function(result, status){
-                    ;
-                }
-            });
-            ui.item.css({
-                'position': 'inherit',
-                'left': '0px',
-                'top': '0px'
-            });
+            saveBookOnHeap(book);
+            addHeapsBookStyle(book);
             console.log('in heap');
         },
         beforeStop: function(event, ui) {
@@ -37,6 +21,37 @@ $(function () {
         },
         connectWith: ['.transfer']
     });
+
+    var shelfSortable = $('.shelf').sortable({
+        remove: function( event, ui ) {
+            console.log('out shelf');
+        },
+        receive: function( event, ui ) {
+            var shelf = ui.item.parent();
+            addShelfsBookStyle(ui.item);
+            reArrangeBooksOnShelf(shelf);
+            console.log('in shelf');
+        },
+        change: function( event, ui ) {
+            console.log('change shelf');
+            var shelf = ui.item.parent();
+            reArrangeBooksOnShelf(shelf);
+        },
+        update: function( event, ui ) {
+            console.log('update shelf');
+            var shelf = ui.item.parent();
+            var book = ui.item;
+            saveBookOnShelf(book, shelf);
+            reArrangeBooksOnShelf(shelf);
+        },
+        beforeStop: function(event, ui) {
+            console.log('shelfSortable start to stop');
+        },
+        connectWith: ['.transfer']
+    });
+
+    var intervalId;
+
     function calculateOffset(items, real){
         var real = real || false;
         var width = 0;
@@ -49,59 +64,15 @@ $(function () {
         });
         return width;
     }
-    var shelfSortable = $('.shelf').sortable({
-        remove: function( event, ui ) {
-            console.log('out shelf');
-        },
-        receive: function( event, ui ) {
-            ui.item.css({
-                'position': 'absolute',
-                'top': 'auto',
-                'bottom': '0px'
+
+    function reArrangeBooksOnShelf(shelf){
+        shelf.children().each(function(){
+            $(this).css({
+                'left': calculateOffset($(this).prevAll())+'px'
             });
-            ui.item.parent().children().each(function(){
-                $(this).css({
-                    'left': calculateOffset($(this).prevAll())+'px'
-                });
-            });
-            console.log('in shelf');
-        },
-        change: function( event, ui ) {
-            console.log('change shelf');
-            ui.item.parent().children().each(function(){
-                $(this).css({
-                    'left': calculateOffset($(this).prevAll())+'px'
-                });
-            });
-        },
-        update: function( event, ui ) {
-            console.log('update shelf');
-            var shelf = ui.item.parent();
-            var book = ui.item;
-            $.ajax({
-                type: "POST",
-                url: shelf.data('save'),
-                data: {
-                    bookId : book.data('id')
-                },
-                error: function(response){
-                    showError(response.responseJSON[0].error);
-                },
-                success: function(result, status){
-                    ;
-                }
-            });
-            ui.item.parent().children().each(function(){
-                $(this).css({
-                    'left': calculateOffset($(this).prevAll())+'px'
-                });
-            });
-        },
-        beforeStop: function(event, ui) {
-            console.log('shelfSortable start to stop');
-        },
-        connectWith: ['.transfer']
-    });
+        });
+    }
+
     //rotate book
     $('.heap').on('click', '.heaps_book', function(){
         $(this).css({
@@ -151,6 +122,7 @@ $(function () {
             'depth': 'Книга не может быть длиннее, чем глубина полки. Очень жаль, что в 2D это не отобразить.',
             'height': 'Книга слишком высокая. Поместите ее на другую полку',
             'ajax': 'Ошибка выполнения ajax-запроса',
+            'drop': 'Книга упала с полки. Попробуй теперь найди ее в этой куче.'
         };
         message.text(errors[text] !== undefined ? errors[text] : text);
         title.text('Ошибка');
@@ -159,15 +131,104 @@ $(function () {
             title.text('');
         }).modal();
     }
+
+    function saveBookOnShelf(book, shelf){
+        $.ajax({
+            type: "POST",
+            url: shelf.data('save'),
+            data: {
+                bookId : book.data('id')
+            },
+            error: function(response){
+                showError(response.responseJSON[0].error);
+            },
+            success: function(result, status){
+                ;
+            }
+        });
+    }
+
+    function saveBookOnHeap(book){
+        var heap = $('.heap .books');
+        $.ajax({
+            type: "POST",
+            url: heap.data('save'),
+            data: {
+                bookId : book.data('id')
+            },
+            error: function(response){
+                showError(response.responseJSON[0].error);
+            },
+            success: function(result, status){
+                ;
+            }
+        });
+    }
+
     function getRandomInt(min, max) {
         return min === max ? min : (Math.floor(Math.random() * (max - min)) + min);
     }
-    function putDownBook(){
+
+    function dropBook(){
+        var heap = $('.heap .books');
         var shelves = $('.shelf:has(.book)');
-        var shelve = shelves.eq(getRandomInt(0, shelves.length));
-        var book = shelve.children().eq(getRandomInt(0, shelve.children().length));
-        console.log(book);
+        var shelf = shelves.eq(getRandomInt(0, shelves.length));
+        var book = shelf.children().eq(getRandomInt(0, shelf.children().length));
+        heap.append(book);
+        saveBookOnHeap(book);
+        addHeapsBookStyle(book);
+        reArrangeBooksOnShelf(shelf);
     }
-    putDownBook();
+
+    function addHeapsBookStyle(element){
+        element.css({
+            'position': 'inherit',
+            'left': '0px',
+            'top': '0px'
+        });
+    }
+
+    function addShelfsBookStyle(element){
+        element.css({
+            'position': 'absolute',
+            'top': 'auto',
+            'bottom': '0px'
+        });
+    }
+
+    function dropBookManually(){
+        $('[role="putDownBook"]').click(function (e) {
+            e.preventDefault();
+            dropBook();
+        });
+    }
+
+    function enableAutoDropping(){
+        intervalId = setInterval(function(){
+            dropBook();
+            showError('drop');
+        }, getRandomInt(5, 10)*1000)
+    }
+
+    function disableAutoDropping(){
+        clearInterval(intervalId);
+    }
+
+    function autoDroppingSwitcher(){
+        $('[data-name="droppingSwitcher"]').click(function(e){
+            e.preventDefault();
+            if(!$(this).hasClass('dropOn')){
+                enableAutoDropping();
+                $(this).addClass('dropOn').text($(this).data('textOn'));
+            }else{
+                disableAutoDropping();
+                $(this).removeClass('dropOn').text($(this).data('textOff'));
+            }
+        });
+    }
+
+    dropBookManually();
+    autoDroppingSwitcher();
+
     //$('[data-possible="draggable"]').draggable();
 })

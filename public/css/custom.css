@@ -23,11 +23,14 @@
     border-bottom: 2px solid saddlebrown;
     width: 100%;
     position: relative;
-    background: url("/image/woods.jpg") 0 0 repeat;
+    background: url("/image/wood.jpg") 0 0 repeat;
 }
 
 /*heap*/
-.heaps_book{
+.heap .book{
+    position: inherit;
+    left: 0px;
+    top: 0px
 }
 .book{
     border: 1px solid black;
@@ -36,20 +39,48 @@
     padding: 0;
 }
 .spin1{
-    background: url("/image/spins/1.jpg") 0 0 repeat-x;
+    background: url("/image/spins/horisontal/1.jpg") 0 0 repeat-x;
+    background-size: contain;
 }
 .spin2{
-    background: url("/image/spins/2.jpg") 0 0 repeat-x;
+    background: url("/image/spins/horisontal/2.jpg") 0 0 repeat-x;
+    background-size: contain;
 }
 .spin3{
-    background: url("/image/spins/3.jpg") 0 0 repeat-x;
+    background: url("/image/spins/horisontal/3.jpg") 0 0 repeat-x;
+    background-size: contain;
 }
 .spin4{
-    background: url("/image/spins/4.jpg") 0 0 repeat-x;
+    background: url("/image/spins/horisontal/4.jpg") 0 0 repeat-x;
+    background-size: contain;
 }
 .spin5{
-    background: url("/image/spins/5.jpg") 0 0 repeat-x;
+    background: url("/image/spins/horisontal/5.jpg") 0 0 repeat-x;
+    background-size: contain;
 }
 .vertical{
     background-repeat: repeat-y;
+}
+.vertical.spin1{
+    background: url("/image/spins/vertical/1.jpg") 0 0 repeat-y;
+    background-size: contain;
+}
+.vertical.spin2{
+    background: url("/image/spins/vertical/2.jpg") 0 0 repeat-y;
+    background-size: contain;
+}
+.vertical.spin3{
+    background: url("/image/spins/vertical/3.jpg") 0 0 repeat-y;
+    background-size: contain;
+}
+.vertical.spin4{
+    background: url("/image/spins/vertical/4.jpg") 0 0 repeat-y;
+    background-size: contain;
+}
+.vertical.spin5{
+    background: url("/image/spins/vertical/5.jpg") 0 0 repeat-y;
+    background-size: contain;
+}
+.heap .row{
+    margin: 20px 0 0;
 }

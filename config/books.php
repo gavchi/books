@@ -141,13 +141,5 @@ return [
             'width' => 170,
             'height' => 240
         ],
-        [
-            'width' => 205,
-            'height' => 260
-        ],
-        [
-            'width' => 220,
-            'height' => 290
-        ],
     ]
 ];
