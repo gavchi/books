@@ -1,27 +1,26 @@
-# Laravel PHP Framework
+# Хранение книг в библиотеке
+##Описание
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+У каждой книги имеется название, автор и габариты (ВxШxГ) в условных единицах.
+![Book](http://gavchi.pw/example/book.png)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Книга может находиться в «куче» либо быть установленной на конкретном стеллаже. 
+Имеются стеллажи для хранения книг. 
+У каждого стеллажа имеется определённое количество полок и габариты каждой полки. 
+![Rack](http://gavchi.pw/example/rack.png)
 
-## Official Documentation
+При установке книги на стеллаж должно проверяться наличие свободного места для установки книги, 
+соответствие габаритов книги габаритам полки стеллажа. 
+Книги устанавливаются строго вертикально.
+**Чтобы повернуть книгу, нужно на нее кликнуть**
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+Книгу можно «уронить» со стеллажа (по команде либо случайным образом по таймеру). 
+В этом случае библиотекарь должен получать оповещение об этом событии и «возвращать» книгу на место.
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+##Техническая реализация
+Реализовано в виде PHP-приложения с JS-кодом для визуализации операций по перемещению книг между стеллажами и кучей 
+(книгу можно перенести со стеллажа на стеллаж). 
+Для хранения используется MySQL.
+В качестве бекенда использован Laravel 5.2
+Во фронтенде используются jQuery, jQuery UI, Bootstrap 3
